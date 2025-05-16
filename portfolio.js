@@ -147,3 +147,60 @@ function closeOwnerModal() {
 document.addEventListener('keydown', e => {
   if (e.key === "Escape") closeOwnerModal();
 });
+
+(function () {
+  // Avoid showing repeatedly
+  if (sessionStorage.getItem("portfolioPopupShown")) return;
+
+  // Delay popup (e.g., 20 seconds)
+  setTimeout(() => {
+    showPortfolioPopup();
+    sessionStorage.setItem("portfolioPopupShown", "true");
+  }, 20000); // 20,000 ms = 20 seconds
+
+  function showPortfolioPopup() {
+    const popup = document.createElement("div");
+    popup.innerHTML = `
+      <div style="
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        max-width: 300px;
+        background: white;
+        color: black;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        font-family: sans-serif;
+        z-index: 10000;
+      ">
+        <strong>👋 Hey there!</strong><br>
+        Want to see my latest <b>Portfolio</b>?
+        <div style="margin-top: 12px;">
+          <a href="https://your-portfolio-link.com" target="_blank" style="
+            display: inline-block;
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+          ">View Now</a>
+          <button id="closePortfolioPopup" style="
+            float: right;
+            background: transparent;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+          ">&times;</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(popup);
+
+    // Close button
+    document.getElementById("closePortfolioPopup").onclick = () => {
+      popup.remove();
+    };
+  }
+})();
